@@ -1,0 +1,98 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Large: DEBUG/FILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-debug -jwt -keywords password,password123231,secret -a -f ./filter.txt"
+        },
+        {
+            "name": "Large: NONDEBUG/FILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-jwt -keywords password,password123231,secret -a -f ./filter.txt"
+        },
+        {
+            "name": "Large DEBUG/NOFILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-debug -jwt -keywords password,password123231,secret -a"
+        },
+        {
+            "name": "Large NONDEBUG/NOFILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-jwt -keywords password,password123231,secret -a"
+        },
+        {
+            "name": "Medium DEBUG/NOFILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-debug -jwt -keywords password123231,secret -a"
+        },
+        {
+            "name": "Medium DEBUG/FILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            "args": "-debug -jwt -keywords password123231,secret -a -f ./filter.txt"
+        },
+        {
+            "name": "Small: NODEBUG/FILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            // some log
+            //"args": " -jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
+            // my onedrive file
+            //"args": " -jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
+            // both
+            "args": "-jwt -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -f ./filter.txt"
+        },
+        {
+            "name": "Small: NODEBUG/NOFILTER",
+            "type": "python",
+            "request": "launch",
+            "program": "o365sr.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            // some log
+            //"args": " -jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
+            // my onedrive file
+            //"args": " -jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
+            // both
+            "args": "-jwt -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
+        }
+    ]
+}

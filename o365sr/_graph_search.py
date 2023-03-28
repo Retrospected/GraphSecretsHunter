@@ -1,0 +1,56 @@
+import logging
+from o365sr.entities.enum import EntityEnum
+import traceback
+
+class Search:
+    def __init__(self, GraphClient, size=499):
+        self.logger = logging.getLogger("SEARCH")
+        self.client = GraphClient
+        self.size = size
+
+    def search(self, O365Item, keywords, start=0):
+        if not isinstance(O365Item, EntityEnum):
+            raise TypeError('O365Item must be an instance of O365Items Enum')
+
+        results={}
+
+        for keyword in keywords:
+            try:
+                moreResults = True
+                start = 0
+                results_keyword = []
+                self.logger.info(f"Searching {O365Item.name} for keyword {keyword}")
+                while moreResults:
+                    self.logger.debug(f"Using startpoint {start} and max size {self.size}.")
+
+                    json_body = O365Item.value(keyword, self.size).get_json(start)
+
+                    response = self.search_page(json_body)
+                    response.raise_for_status()
+
+                    results_page = response.json()
+                    total = results_page["value"][0]['hitsContainers'][0]['total']
+                    self.logger.debug(f"In progress of retrieving a total of {total} results")
+
+                    if total:
+                        [ results_keyword.append(hit) for hit in results_page["value"][0]['hitsContainers'][0]['hits'] ] 
+                        moreResults = results_page["value"][0]['hitsContainers'][0]['moreResultsAvailable']
+
+                        start = start + self.size + 1
+                        total = results_page["value"][0]['hitsContainers'][0]['total']
+
+                    else:
+                        moreResults = False
+
+                self.logger.info(f"Search completed with {len(results_keyword)} results")
+                results[keyword] = results_keyword
+            except Exception as e:
+                self.logger.error(f"Exception for {O365Item.name} for keyword {keyword} with startpoint {start} and max size {self.size}.")
+                self.logger.error(f"JSON payload: {json_body}")
+                self.logger.error(f"HTTP status code received {response.status_code} and content {response.content}")
+                self.logger.error(traceback.print_exc())
+
+        return results
+    
+    def search_page(self, json_body):
+        return self.client.post('/search/query',json=json_body)
