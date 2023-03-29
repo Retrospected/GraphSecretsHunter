@@ -1,17 +1,6 @@
 #!/usr/bin/python3
 #
 
-# OK SO FORGET about the Graph SDK and let's just build it ourselves
-#
-# Login to https://developer.microsoft.com/en-us/graph/graph-explorer and grab your Authorization Token via Developer Toolbar
-# Copy .env.example to .env and update it with your token
-# Obviously this session is limitedly valid. I think about 4 hours.
-#
-# Use the example code below to interact with the Graph API
-#
-# The GET and POST requests of GraphClient can be treated as an instance of the requests object. 
-# So arguments like "verify=False", to ignore certificate validation, are accepted.
-
 import json
 from o365sr import GraphClient
 from o365sr import Search
