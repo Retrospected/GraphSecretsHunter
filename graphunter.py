@@ -5,6 +5,7 @@ import json
 from o365sr import GraphClient
 from o365sr import Search
 from o365sr import Filter
+from o365sr.jwt import JWTScopeVerifier
 from dotenv import load_dotenv
 import os
 import argparse
@@ -35,10 +36,14 @@ class O365SR:
                 return
         
         search = Search(client)
+        scopeVerifier = JWTScopeVerifier()
         o365results = {}
 
         for entityType in entitytypes:
-            o365results[entityType] = search.search(entityType, keywords)
+            if not scopeVerifier.verify(jwt, entityType.value().scope):
+                self.logger.error(f"The JWT scope does not include the required access to entity: {entityType.name}")
+            else:
+                o365results[entityType] = search.search(entityType, keywords)
 
         if filter:
             o365results = Filter(filter, o365results).filter()

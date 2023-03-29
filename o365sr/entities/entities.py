@@ -1,11 +1,10 @@
 class Entities():
 
-    def __init__(self, keyword, size):
-        self.keyword = keyword
-        self.size = size
+    def __init__(self):
         self.entityType = ""
+        self.scope = []
 
-    def get_json(self, start=0):
+    def get_json(self, keyword, size, start=0):
         body={
                 "requests": [
                     {
@@ -13,10 +12,10 @@ class Entities():
                             self.entityType
                         ],
                         "query": {
-                            "queryString": self.keyword
+                            "queryString": keyword
                         },
                         "from": start,
-                        "size": self.size,
+                        "size": size,
                         "fields": [
                             "webUrl",
                             "parentReference",

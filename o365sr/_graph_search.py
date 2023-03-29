@@ -1,4 +1,7 @@
+
 import logging
+
+from requests import HTTPError
 from o365sr.entities.enum import EntityEnum
 import traceback
 
@@ -7,6 +10,7 @@ class Search:
         self.logger = logging.getLogger("SEARCH")
         self.client = GraphClient
         self.size = size
+
 
     def search(self, O365Item, keywords, start=0):
         if not isinstance(O365Item, EntityEnum):
@@ -23,7 +27,7 @@ class Search:
                 while moreResults:
                     self.logger.debug(f"Using startpoint {start} and max size {self.size}.")
 
-                    json_body = O365Item.value(keyword, self.size).get_json(start)
+                    json_body = O365Item.value().get_json(keyword, self.size, start)
 
                     response = self.search_page(json_body)
                     response.raise_for_status()
@@ -44,6 +48,15 @@ class Search:
 
                 self.logger.info(f"Search completed with {len(results_keyword)} results")
                 results[keyword] = results_keyword
+            except HTTPError as exc:
+                code = exc.response.status_code
+                if code == 403:
+                    self.logger.error(f"Access denied to query entity: {O365Item.name}. This entity is not part of the scope of your Access Token.")
+                else:
+                    self.logger.error(f"Exception for {O365Item.name} for keyword {keyword} with startpoint {start} and max size {self.size}.")
+                    self.logger.error(f"JSON payload: {json_body}")
+                    self.logger.error(f"HTTP status code received {response.status_code} and content {response.content}")
+                    self.logger.error(traceback.print_exc())
             except Exception as e:
                 self.logger.error(f"Exception for {O365Item.name} for keyword {keyword} with startpoint {start} and max size {self.size}.")
                 self.logger.error(f"JSON payload: {json_body}")

@@ -10,7 +10,7 @@ class Filter:
         self.o365results = o365results
 
     def filter(self):
-        self.logger.info("Filtering out items based on a blacklist of URL's")
+        self.logger.info("Filtering out items based on a blacklist of URLs")
 
         returnResults = {}
 
