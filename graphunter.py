@@ -2,17 +2,17 @@
 #
 
 import json
-from o365sr import GraphClient
-from o365sr import Search
-from o365sr import Filter
-from o365sr.jwt import JWTScopeVerifier
+from graphunter import GraphClient
+from graphunter import Search
+from graphunter import Filter
+from graphunter.jwt import JWTScopeVerifier
 from dotenv import load_dotenv
 import os
 import argparse
 import logging
 import csv
 
-from o365sr.entities.enum import EntityEnum
+from graphunter.entities.enum import EntityEnum
 
 load_dotenv()
 

@@ -1,4 +1,4 @@
-from o365sr.entities.entities import Entities
+from graphunter.entities.entities import Entities
 
 class O365driveItem(Entities):
     def __init__(self):

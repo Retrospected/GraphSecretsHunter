@@ -1,5 +1,5 @@
 from enum import Enum
-from o365sr.entities.types import *
+from graphunter.entities.types import *
 
 class EntityEnum(Enum):
     drive = O365drive

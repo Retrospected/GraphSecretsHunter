@@ -2,7 +2,7 @@
 import logging
 
 from requests import HTTPError
-from o365sr.entities.enum import EntityEnum
+from graphunter.entities.enum import EntityEnum
 import traceback
 
 class Search:
