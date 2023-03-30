@@ -18,7 +18,7 @@ load_dotenv()
 
 __version__="0.0.1"
 
-class O365SR:
+class GrapHunter:
     def __init__(self, jwt=None, keywords=None, entitytypes=None, filter=None):
         self.logger = logging.getLogger("O365")
 
@@ -135,6 +135,6 @@ if __name__ == "__main__":
     logger.debug(f"Searching entity types: {[ entity.name for entity in entityTypes ]}")
 
     if options.jwt:
-        o365sr = O365SR(jwt=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter)
+        graphunter = GrapHunter(jwt=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter)
     else:
         exit()
