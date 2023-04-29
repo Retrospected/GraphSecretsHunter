@@ -89,7 +89,7 @@ class GrapHunter:
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(add_help =  True, description = "Crawling O365 for secrets using the GraphAPI.")
-    parser.add_argument('-jwt', default=False, action=argparse.BooleanOptionalAction, help='Using a JWT token obtained from the GraphAPI Explorer configured in your .env file.')
+    parser.add_argument('-jwt', default=False, action='store_true', help='Using a JWT token obtained from the GraphAPI Explorer configured in your .env file.')
     parser.add_argument('-keywords', required=False, action='store', default=None, type=str,
                         help='Comma separated list of keywords.')
     parser.add_argument('-e', '--entityTypes', action='store', default=None, type=str,

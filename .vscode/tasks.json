@@ -6,7 +6,12 @@
         {
             "label": "cleanup",
             "type": "shell",
-            "command": "rm ./*csv  2> /dev/null; rm ./*.raw  2> /dev/null"
+            "linux": {
+                "command": "rm ./*csv  2> /dev/null; rm ./*.raw  2> /dev/null"
+            },
+            "windows": {
+                "command": "del .\\*.csv; del .\\*.raw"
+            }
         }
     ]
 }
