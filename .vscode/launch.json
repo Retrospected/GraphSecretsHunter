@@ -93,6 +93,21 @@
             //"args": " -jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
             // both
             "args": "-jwt -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
+        },
+        {
+            "name": "Small: DEBUG/NOFILTER/DL",
+            "type": "python",
+            "request": "launch",
+            "program": "graphunter.py",
+            "console": "integratedTerminal",
+            "justMyCode": true,
+            "preLaunchTask": "cleanup",
+            // some log
+            //"args": " -jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
+            // my onedrive file
+            //"args": " -jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
+            // both
+            "args": "-jwt -dl -debug -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
         }
     ]
 }

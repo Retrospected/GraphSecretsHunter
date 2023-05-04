@@ -19,8 +19,10 @@ load_dotenv()
 __version__="0.0.1"
 
 class GrapHunter:
-    def __init__(self, jwt=None, keywords=None, entitytypes=None, filter=None):
+    def __init__(self, jwt=None, keywords=None, entitytypes=None, filter=None, output=None, download=None):
         self.logger = logging.getLogger("O365")
+
+        self.jwt = jwt
 
         if jwt:
             client = GraphClient(token=jwt)
@@ -54,13 +56,38 @@ class GrapHunter:
                 for hit in o365results[entity][keyword]:
                     self.writeResultCSV(entity, keyword, hit)
 
-        if (options.debug):
+        if options.download:
+            logger.info(f"Downloading files to {options.output}")
+            for entity in o365results.keys():
+                for keyword in o365results[entity]:
+                    if len(o365results[entity][keyword]) > 0:
+                        logger.debug(f"Download files for entity: {entity.name}")
+                        for hit in o365results[entity][keyword]:
+                            url = hit["resource"]["webUrl"]
+                            logger.debug(f"Download files from: {url}")
+                            self.downloadEntity(entity.name, o365results[entity][keyword] , url)
+
+        if options.debug:
             self.writeResultRaw(o365results)
- 
-        # TODO next: 
-        # - figure out how to download the relevant content accordingly
 
         logger.info("O365 finished")
+
+    def downloadEntity(self,entityName, keyword, url):
+        rootOutput = options.output
+        entityOutput = os.path.join(rootOutput,entityName)
+
+        if not os.path.exists(rootOutput):
+            os.mkdir(rootOutput)
+
+        if not os.path.exists(entityOutput):
+            os.mkdir(entityOutput)
+
+        # this is not working :D my graphapi token doesnt work on o365 sources, so have to figure out how to download the files
+        from requests import Session
+        graph_session = Session()
+        graph_session.headers = { "Authorization": "Bearer " + self.jwt}
+        test = graph_session.get(url)
+        return
 
     def writeResultRaw(self,results):
         for entity in results.keys():
@@ -97,6 +124,9 @@ if __name__ == "__main__":
     parser.add_argument('-a', '--all', default=True, action='store_true', help='Use all entity types.')
     parser.add_argument('-l', '--list', action='store_true', help='List available O365 entity types.')
     parser.add_argument('-f', '--filter', action='store', default=None, type=argparse.FileType('r'), help='Filter out items that have their webUrl start with these URL\'s. Takes a path to a file as input.')
+    parser.add_argument('-dl', '--download', action='store_true', help='Download all files. Use -o to customize the output directory (default: output/)')
+    parser.add_argument('-o', '--output', action='store', default="output/", type=str,
+                        help='Directory used to download files to, -d option is required. (Default: output/)')
     parser.add_argument('-debug', action='store_true', help='Enable DEBUG output.')
     options = parser.parse_args()
 
@@ -135,6 +165,6 @@ if __name__ == "__main__":
     logger.debug(f"Searching entity types: {[ entity.name for entity in entityTypes ]}")
 
     if options.jwt:
-        graphunter = GrapHunter(jwt=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter)
+        graphunter = GrapHunter(jwt=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
     else:
         exit()
