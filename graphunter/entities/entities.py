@@ -16,6 +16,7 @@ class Entities():
                         },
                         "from": start,
                         "size": size,
+                        "trimDuplicates": True,
                         "fields": [
                             "webUrl",
                             "parentReference",

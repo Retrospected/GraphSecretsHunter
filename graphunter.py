@@ -54,6 +54,7 @@ class GrapHunter:
             logger.info(f"Writing out results of entity: {entity.name}")
             for keyword in o365results[entity]:
                 for hit in o365results[entity][keyword]:
+                    # TODO: I'm not writing the most interesting results, missing webUrl for sure. Have to expand this and make it dynamic somehow as well
                     self.writeResultCSV(entity, keyword, hit)
 
         if options.download:

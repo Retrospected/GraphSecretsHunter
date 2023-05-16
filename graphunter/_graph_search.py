@@ -29,8 +29,22 @@ class Search:
 
                     json_body = O365Item.value().get_json(keyword, self.size, start)
 
-                    response = self.search_page(json_body)
-                    response.raise_for_status()
+                    max_retries = 3
+                    retry_count = 0
+
+                    while retry_count < max_retries:
+                        try:
+                            response = self.search_page(json_body)
+                            response.raise_for_status()
+                        except HTTPError as exc:
+                            retry_count += 1
+                            status_code = exc.response.status_code
+                        else:
+                            status_code = 200
+                            break
+
+                    if status_code != 200:
+                        raise HTTPError(self.client.url+"/search/query", status_code, "Error while performing request to server.")
 
                     results_page = response.json()
                     total = results_page["value"][0]['hitsContainers'][0]['total']
