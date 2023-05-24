@@ -63,8 +63,11 @@ class Search:
                 self.logger.info(f"Search completed with {len(results_keyword)} results")
                 results[keyword] = results_keyword
             except HTTPError as exc:
-                code = exc.response.status_code
-                if code == 403:
+                if status_code:
+                    code = status_code
+                else:
+                    code = exc.response.status_code
+                if code == 403 or code == 401:
                     self.logger.error(f"Access denied to query entity: {O365Item.name}. This entity is not part of the scope of your Access Token.")
                 else:
                     self.logger.error(f"Exception for {O365Item.name} for keyword {keyword} with startpoint {start} and max size {self.size}.")
