@@ -1,4 +1,4 @@
-# GrapHunter
+# Graph API Secrets Hunter
 
 Searching for secrets on O365 based on keywords using Graph API.
 
