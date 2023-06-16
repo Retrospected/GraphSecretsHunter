@@ -7,6 +7,7 @@ from graphunter import Search
 from graphunter import Filter
 from graphunter.jwt import JWTScopeVerifier
 from dotenv import load_dotenv
+from azure.identity import UsernamePasswordCredential
 import os
 import argparse
 import logging
@@ -19,20 +20,20 @@ load_dotenv()
 __version__="0.0.1"
 
 class GrapHunter:
-    def __init__(self, jwt=None, keywords=None, entitytypes=None, filter=None, output=None, download=None):
+    def __init__(self, token=None, keywords=None, entitytypes=None, filter=None, output=None, download=None):
         self.logger = logging.getLogger("O365")
 
-        self.jwt = jwt
+        self.token = token
 
-        if jwt:
-            client = GraphClient(token=jwt)
+        if token:
+            client = GraphClient(token=token)
             try:
                 authtest = client.get('/me')
                 if authtest.status_code == 200:
                     user = authtest.json()
                     logger.info("Authentication succesful")
                 else:
-                    raise Exception("Unauthorized access - JWT token expired?")
+                    raise Exception("Unauthorized access")
             except Exception as e:
                 logger.error(e)
                 return
@@ -42,7 +43,7 @@ class GrapHunter:
         o365results = {}
 
         for entityType in entitytypes:
-            if not scopeVerifier.verify(jwt, entityType.value().scope):
+            if not scopeVerifier.verify(token, entityType.value().scope):
                 self.logger.error(f"The JWT scope does not include the required access to entity: {entityType.name}")
             else:
                 o365results[entityType] = search.search(entityType, keywords)
@@ -117,7 +118,7 @@ class GrapHunter:
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(add_help =  True, description = "Crawling O365 for secrets using the GraphAPI.")
-    parser.add_argument('-jwt', default=False, action='store_true', help='Using a JWT token obtained from the GraphAPI Explorer configured in your .env file.')
+    parser.add_argument("-auth", choices=["jwt", "appreg"], help='Chosing an auth method. Configure the right variables in your .env file.')
     parser.add_argument('-keywords', required=False, action='store', default=None, type=str,
                         help='Comma separated list of keywords.')
     parser.add_argument('-e', '--entityTypes', action='store', default=None, type=str,
@@ -165,7 +166,17 @@ if __name__ == "__main__":
 
     logger.debug(f"Searching entity types: {[ entity.name for entity in entityTypes ]}")
 
-    if options.jwt:
-        graphunter = GrapHunter(jwt=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
-    else:
+    if options.auth == "jwt":
+        graphunter = GrapHunter(token=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
+    elif options.auth == "appreg":
+        CLIENT_ID=os.getenv("client_id")
+        USERNAME=os.getenv("username")
+        PASSWORD=os.getenv("password")
+
+        app = UsernamePasswordCredential(
+            client_id=CLIENT_ID, username=USERNAME ,password=PASSWORD
+        )
+        token = app.get_token('https://graph.microsoft.com/.default')
+        graphunter = GrapHunter(token=token[0], keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
+else:
         exit()

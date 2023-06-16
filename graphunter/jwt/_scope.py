@@ -11,9 +11,14 @@ class JWTScopeVerifier:
         except jwt.InvalidTokenError:
             self.logger.error('Invalid JWT token')
             return False
+        
+        verified = True
 
-        for scope in scopeList:
-            if scope in decoded_token['scp']:
-                return True
+        try:
+            for scope in scopeList:
+                if not scope in decoded_token['scp']:
+                    verified = False
+        except:
+            return False
 
-        return False
+        return verified

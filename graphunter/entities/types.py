@@ -16,16 +16,16 @@ class O365Site(Entities):
     def __init__(self):
         super().__init__()
         self.entityType = "site"
-        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All', 'Sites.Selected']
+        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All']
 
 class O365list(Entities):
     def __init__(self):
         super().__init__()
         self.entityType = "list"
-        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All', 'Sites.Selected']
+        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All']
 
 class O365listItem(Entities):
     def __init__(self):
         super().__init__()
         self.entityType = "listItem"
-        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All', 'Sites.Selected']
+        self.scope = ['Sites.Read.All', 'Sites.ReadWrite.All', 'Sites.Read', 'Sites.ReadWrite', 'Sites.Manage.All', 'Sites.FullControl.All']
