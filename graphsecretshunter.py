@@ -121,7 +121,7 @@ if __name__ == "__main__":
         exit()
         
     if not options.keywords:
-        logger.error("The following arguments are required: -keywords")
+        logger.error("The following argument is required: -keywords")
         exit()
 
     if options.auth != "jwt" and options.auth != "appreg":
