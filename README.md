@@ -1,6 +1,6 @@
-# Graph API Secrets Hunter
+# GraphSecretsHunter
 
-Searching for secrets on O365 based on keywords using Graph API.
+Searching for secrets based on keywords on Office365 sources using the Microsoft Graph API.
 
 ## Requirements
 
