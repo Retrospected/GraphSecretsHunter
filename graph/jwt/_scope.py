@@ -17,8 +17,8 @@ class JWTScopeVerifier:
         try:
             for scope in scopeList:
                 if not scope in decoded_token['scp']:
-                    verified = False
+                    raise Exception(f"Invalid scope: {scope}")
         except:
-            return False
+            raise
 
         return verified

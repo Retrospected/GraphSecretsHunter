@@ -2,10 +2,10 @@
 #
 
 import json
-from graphunter import GraphClient
-from graphunter import Search
-from graphunter import Filter
-from graphunter.jwt import JWTScopeVerifier
+from graph import GraphClient
+from graph import Search
+from graph import Filter
+from graph.jwt import JWTScopeVerifier
 from dotenv import load_dotenv
 from azure.identity import UsernamePasswordCredential
 import os
@@ -13,15 +13,15 @@ import argparse
 import logging
 import csv
 
-from graphunter.entities.enum import EntityEnum
+from graph.entities.enum import EntityEnum
 
 load_dotenv()
 
-__version__="0.0.1"
+__version__="1.0.0"
 
-class GrapHunter:
-    def __init__(self, token=None, keywords=None, entitytypes=None, filter=None, output=None, download=None):
-        self.logger = logging.getLogger("O365")
+class GraphSecretsHunter:
+    def __init__(self, token=None, keywords=None, entitytypes=None, filter=None):
+        self.logger = logging.getLogger("GRAPHSECRETSHUNTER")
 
         self.token = token
 
@@ -58,42 +58,15 @@ class GrapHunter:
                     # TODO: I'm not writing the most interesting results, missing webUrl for sure. Have to expand this and make it dynamic somehow as well
                     self.writeResultCSV(entity, keyword, hit)
 
-        if options.download:
-            logger.info(f"Downloading files to {options.output}")
-            for entity in o365results.keys():
-                for keyword in o365results[entity]:
-                    if len(o365results[entity][keyword]) > 0:
-                        logger.debug(f"Download files for entity: {entity.name}")
-                        for hit in o365results[entity][keyword]:
-                            url = hit["resource"]["webUrl"]
-                            logger.debug(f"Download files from: {url}")
-                            self.downloadEntity(entity.name, o365results[entity][keyword] , url)
-
         if options.debug:
-            self.writeResultRaw(o365results)
+            self.writeResultJSON(o365results)
 
-        logger.info("O365 finished")
+        logger.info("GraphSecretsHunter finished")
 
-    def downloadEntity(self,entityName, keyword, url):
-        rootOutput = options.output
-        entityOutput = os.path.join(rootOutput,entityName)
 
-        if not os.path.exists(rootOutput):
-            os.mkdir(rootOutput)
-
-        if not os.path.exists(entityOutput):
-            os.mkdir(entityOutput)
-
-        # this is not working :D my graphapi token doesnt work on o365 sources, so have to figure out how to download the files
-        from requests import Session
-        graph_session = Session()
-        graph_session.headers = { "Authorization": "Bearer " + self.jwt}
-        test = graph_session.get(url)
-        return
-
-    def writeResultRaw(self,results):
+    def writeResultJSON(self,results):
         for entity in results.keys():
-            with open(f'results_{entity.name}.raw', 'w') as f:
+            with open(f'results_{entity.name}.json', 'w') as f:
                 json.dump(results[entity], f)
 
     def writeResultCSV(self, entity, keyword, hit):
@@ -118,18 +91,16 @@ class GrapHunter:
 if __name__ == "__main__":
 
     parser = argparse.ArgumentParser(add_help =  True, description = "Crawling O365 for secrets using the GraphAPI.")
-    parser.add_argument("-auth", choices=["jwt", "appreg"], help='Chosing an auth method. Configure the right variables in your .env file.')
+    parser.add_argument("-auth", choices=["jwt", "appreg"], help='Using a GraphAPI access token or an app registration configured in your .env file.')
     parser.add_argument('-keywords', required=False, action='store', default=None, type=str,
-                        help='Comma separated list of keywords.')
+                        help='Comma separated list of keywords (wildcard * is allowed).')
     parser.add_argument('-e', '--entityTypes', action='store', default=None, type=str,
                         help='Comma separated list of O365 entity types. Use -l to get a list of available entity types.')
     parser.add_argument('-a', '--all', default=True, action='store_true', help='Use all entity types.')
     parser.add_argument('-l', '--list', action='store_true', help='List available O365 entity types.')
     parser.add_argument('-f', '--filter', action='store', default=None, type=argparse.FileType('r'), help='Filter out items that have their webUrl start with these URL\'s. Takes a path to a file as input.')
-    parser.add_argument('-dl', '--download', action='store_true', help='Download all files. Use -o to customize the output directory (default: output/)')
-    parser.add_argument('-o', '--output', action='store', default="output/", type=str,
-                        help='Directory used to download files to, -d option is required. (Default: output/)')
     parser.add_argument('-debug', action='store_true', help='Enable DEBUG output.')
+
     options = parser.parse_args()
 
     logger = logging.getLogger("MAIN")
@@ -138,7 +109,7 @@ if __name__ == "__main__":
     else:
         logging.basicConfig(format='%(name)-11s | %(asctime)s - %(levelname)-5s - %(message)s', level=logging.INFO)
 
-    logger.info(f"O365 - v{__version__}")
+    logger.info(f"GraphSecretsHunter - v{__version__}")
     filter = []
     if options.filter:
         with options.filter as file:
@@ -151,6 +122,10 @@ if __name__ == "__main__":
         
     if not options.keywords:
         logger.error("The following arguments are required: -keywords")
+        exit()
+
+    if options.auth != "jwt" and options.auth != "appreg":
+        logger.error("Specify the desired authentication mode using -auth either by using '-auth jwt' or '-auth appreg'")
         exit()
 
     entityTypes = []
@@ -167,7 +142,7 @@ if __name__ == "__main__":
     logger.debug(f"Searching entity types: {[ entity.name for entity in entityTypes ]}")
 
     if options.auth == "jwt":
-        graphunter = GrapHunter(token=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
+        GraphSecretsHunter(token=os.getenv("jwt"), keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter)
     elif options.auth == "appreg":
         CLIENT_ID=os.getenv("client_id")
         USERNAME=os.getenv("username")
@@ -177,6 +152,6 @@ if __name__ == "__main__":
             client_id=CLIENT_ID, username=USERNAME ,password=PASSWORD
         )
         token = app.get_token('https://graph.microsoft.com/.default')
-        graphunter = GrapHunter(token=token[0], keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter, output=options.output, download=options.download)
+        GraphSecretsHunter(token=token[0], keywords=options.keywords.split(','), entitytypes=entityTypes, filter=filter)
 else:
         exit()

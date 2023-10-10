@@ -12,22 +12,23 @@ A third option is to use delegated permissions based on an Application Registrat
 
 ## Usage
 
-Copy .env.example to .env and update it with your token.
+Copy .env.example to .env and update it with your token or app registration details.
 
 ```
-graphunter.py [-h] [-jwt] [-keywords KEYWORDS] [-e ENTITYTYPES] [-a] [-l] [-f FILTER] [-debug]
+graphunter.py [-h] -auth jwt|appreg -keywords KEYWORDS [-e ENTITYTYPES] [-a] [-l] [-f FILTER] [-debug]
 
 Crawling O365 for secrets using the GraphAPI.
 
 options:
-  -h, --help            show this help message and exit
-  -jwt                  Using a JWT token obtained from the GraphAPI Explorer configured in your .env file. (default: False)
-  -keywords KEYWORDS    Comma separated list of keywords.
+  -h, --help            Show this help message and exit.
+  -auth jwt|appreg      Using a GraphAPI access token or an app registration configured in your .env file.
+  -keywords KEYWORDS    Comma separated list of keywords (wildcard * is allowed).
   -e ENTITYTYPES, --entityTypes ENTITYTYPES
                         Comma separated list of O365 entity types. Use -l to get a list of available entity types.
   -a, --all             Use all entity types.
   -l, --list            List available O365 entity types.
   -f FILTER, --filter FILTER
                         Filter out items that have their webUrl start with these URL's. Takes a path to a file as input.
+  -o OUTPUT             
   -debug                Enable DEBUG output.
 ```

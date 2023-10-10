@@ -2,7 +2,7 @@
 import logging
 
 from requests import HTTPError
-from graphunter.entities.enum import EntityEnum
+from graph.entities.enum import EntityEnum
 import traceback
 
 class Search:
@@ -12,7 +12,7 @@ class Search:
         self.size = size
 
 
-    def search(self, O365Item, keywords, start=0):
+    def search(self, O365Item, keywords, start=0, progress=None):
         if not isinstance(O365Item, EntityEnum):
             raise TypeError('O365Item must be an instance of O365Items Enum')
 
@@ -23,7 +23,7 @@ class Search:
                 moreResults = True
                 start = 0
                 results_keyword = []
-                self.logger.info(f"Searching {O365Item.name} for keyword {keyword}")
+                self.logger.debug(f"Searching {O365Item.name} for keyword {keyword}")
                 while moreResults:
                     self.logger.debug(f"Using startpoint {start} and max size {self.size}.")
 
@@ -60,7 +60,7 @@ class Search:
                     else:
                         moreResults = False
 
-                self.logger.info(f"Search completed with {len(results_keyword)} results")
+                self.logger.debug(f"Search completed with {len(results_keyword)} results")
                 results[keyword] = results_keyword
             except HTTPError as exc:
                 if status_code:
@@ -79,7 +79,7 @@ class Search:
                 self.logger.error(f"JSON payload: {json_body}")
                 self.logger.error(f"HTTP status code received {response.status_code} and content {response.content}")
                 self.logger.error(traceback.print_exc())
-
+        
         return results
     
     def search_page(self, json_body):

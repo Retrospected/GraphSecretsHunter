@@ -8,7 +8,7 @@
             "name": "Large: DEBUG/FILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -18,7 +18,7 @@
             "name": "Large: NONDEBUG/FILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -28,7 +28,7 @@
             "name": "Large DEBUG/NOFILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -38,7 +38,7 @@
             "name": "Large NONDEBUG/NOFILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -48,7 +48,7 @@
             "name": "Medium DEBUG/NOFILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -58,7 +58,7 @@
             "name": "Medium DEBUG/FILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
@@ -68,60 +68,40 @@
             "name": "Small: NODEBUG/FILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
-            // some log
-            //"args": " -auth jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
-            // my onedrive file
-            //"args": " -auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
-            // both
             "args": "-auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -f ./filter.txt"
         },
         {
             "name": "Small: NODEBUG/NOFILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
-            // some log
-            //"args": " -auth jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
-            // my onedrive file
-            //"args": " -auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
-            // both
             "args": "-auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
         },
         {
             "name": "APPREG: Small: NODEBUG/NOFILTER",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
-            // some log
-            //"args": " -auth jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
-            // my onedrive file
-            //"args": " -auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
-            // both
             "args": "-auth appreg -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
         },
         {
             "name": "Small: DEBUG/NOFILTER/DL",
             "type": "python",
             "request": "launch",
-            "program": "graphunter.py",
+            "program": "graphsecretshunter.py",
             "console": "integratedTerminal",
             "justMyCode": true,
             "preLaunchTask": "cleanup",
-            // some log
-            //"args": " -auth jwt -keywords b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a -d -f"
-            // my onedrive file
-            //"args": " -auth jwt -keywords 75305aae9aa1c10cddca91628ed4361f -a -d -f"
-            // both
             "args": "-auth jwt -dl -debug -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
         }
     ]
