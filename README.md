@@ -17,7 +17,7 @@ Copy .env.example to .env and update it with your token or app registration deta
 ```
 graphunter.py [-h] -auth jwt|appreg -keywords KEYWORDS [-e ENTITYTYPES] [-a] [-l] [-f FILTER] [-debug]
 
-Crawling O365 for secrets using the GraphAPI.
+Searching for secrets based on keywords on Office365 sources using the Microsoft Graph API.
 
 options:
   -h, --help            Show this help message and exit.

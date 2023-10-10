@@ -90,7 +90,7 @@ class GraphSecretsHunter:
 
 if __name__ == "__main__":
 
-    parser = argparse.ArgumentParser(add_help =  True, description = "Crawling O365 for secrets using the GraphAPI.")
+    parser = argparse.ArgumentParser(add_help =  True, description = "Searching for secrets based on keywords on Office365 sources using the Microsoft Graph API.")
     parser.add_argument("-auth", choices=["jwt", "appreg"], help='Using a GraphAPI access token or an app registration configured in your .env file.')
     parser.add_argument('-keywords', required=False, action='store', default=None, type=str,
                         help='Comma separated list of keywords (wildcard * is allowed).')
