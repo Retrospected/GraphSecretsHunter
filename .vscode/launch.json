@@ -93,16 +93,6 @@
             "justMyCode": true,
             "preLaunchTask": "cleanup",
             "args": "-auth appreg -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
-        },
-        {
-            "name": "Small: DEBUG/NOFILTER/DL",
-            "type": "python",
-            "request": "launch",
-            "program": "graphsecretshunter.py",
-            "console": "integratedTerminal",
-            "justMyCode": true,
-            "preLaunchTask": "cleanup",
-            "args": "-auth jwt -dl -debug -keywords 75305aae9aa1c10cddca91628ed4361f,b540be4b7ec48d0dd7512c8d8df9399d6bf84d76 -a"
         }
     ]
 }
