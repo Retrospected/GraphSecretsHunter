@@ -29,6 +29,5 @@ options:
   -l, --list            List available O365 entity types.
   -f FILTER, --filter FILTER
                         Filter out items that have their webUrl start with these URL's. Takes a path to a file as input.
-  -o OUTPUT             
   -debug                Enable DEBUG output.
 ```
