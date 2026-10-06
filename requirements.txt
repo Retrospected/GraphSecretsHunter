@@ -1,4 +1,4 @@
 python-dotenv==1.2.2
 tqdm==4.66.3
-pyjwt==2.14.0
+pyjwt==2.15.0
 azure-identity==1.16.1
